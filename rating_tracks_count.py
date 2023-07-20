@@ -2,7 +2,7 @@
 class rating_tr_count:
     def count_selection(count):
         '''
-    Функция для получения списка треков с сайта ru.hitmotop.com.
+    Функция для получения списка треков с сайта rur.hitmotop.com.
 Параметры:
     - count: число от 1 до 48, кол-во треков
 Возвращает словарь вида:
@@ -24,7 +24,7 @@ class rating_tr_count:
             __headers = {'user-agent': __user}
  
             __list = []
-            url = 'https://ru.hitmotop.com/songs/top-rated'
+            url = 'https://rur.hitmotop.com/songs/top-rated'
             response = requests.get(url, headers=__headers)
             soup = BeautifulSoup(response.text, 'lxml')
             naz_track = soup.find_all('div', class_='track__title')
@@ -40,10 +40,10 @@ class rating_tr_count:
                     __list.append({
                         'author': musikant_track[i].text,
                         'title': track.text.lstrip().lstrip().lstrip().lstrip().rstrip(),
-                        'url_track': f'https://ru.hitmotop.com{url_track[i].get("href").lstrip()}',
+                        'url_track': f'https://rur.hitmotop.com{url_track[i].get("href").lstrip()}',
                         'url_down': f"{track_dow_url[i].get('href')}",
                         'duration_track': duration_track[i].text,
-                        'picture_url': f'https://ru.hitmotop.com{picture_url[i].get("style")[23:-3]}'
+                        'picture_url': f'https://rur.hitmotop.com{picture_url[i].get("style")[23:-3]}'
                     })
                     fg+=1
 

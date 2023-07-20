@@ -1,6 +1,6 @@
-'''Треки от переданного запроса'''
+'''Треки из переданного запроса'''
 
-class EnteredTr48():
+class Entered_Track_48():
     def __init__(self, music_name:str, amount:int):
         self.music_name = music_name
         self.amount = amount
@@ -31,7 +31,7 @@ class EnteredTr48():
             for _ in range(amount):
                 __list.append({"author": "", "title": "", "url_down": "", "duration_track": "", "picture_url": "", "url_track": ""})
 
-            url = f"https://ru.hitmotop.com/search?q={music_name}"
+            url = f"https://rur.hitmotop.com/search?q={music_name}"
             response = requests.get(url, headers=__headers)
             soup = BeautifulSoup(response.text, "lxml")
             try:
@@ -46,9 +46,9 @@ class EnteredTr48():
             track_titles = [i.text.strip() for i in soup.find_all("div", class_="track__title")]
             track_artists = [i.text.strip() for i in soup.find_all("div", class_="track__desc")]
             track_duration = [i.text.strip() for i in soup.find_all("div", class_="track__fulltime")]
-            track_pictures = [f"https://ru.hitmotop.com{i.get('style')[23:-3]}" for i in soup.find_all("div", class_="track__img")]
+            track_pictures = [f"https://rur.hitmotop.com{i.get('style')[23:-3]}" for i in soup.find_all("div", class_="track__img")]
             track_urls_dow = [i.get('href') for i in soup.find_all('a', class_='track__download-btn')]
-            track_url = [f"https://ru.hitmotop.com{tra_url.get('href')}" for tra_url in soup.find_all('a', class_='track__info-l')]
+            track_url = [f"https://rur.hitmotop.com{tra_url.get('href')}" for tra_url in soup.find_all('a', class_='track__info-l')]
 
             items = []
             for idx, track in enumerate(__list):
