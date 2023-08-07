@@ -1,6 +1,8 @@
 from entered_tracks import Entered_Track_48
 import urllib.request, os
+from colorama import Fore, Style, init
 os.system('cls')
+init()
 
 path='ПУТЬ'
 
@@ -42,15 +44,18 @@ def get_url_track():
 def down_music(path):
     for tracks in mus['response']['items']:
         print(tracks['url_down'])
-        urllib.request.urlretrieve(tracks['url_down'],f"{path}{tracks['title']}.mp3")
+        urllib.request.urlretrieve(
+            tracks['url_down'],
+        f"{path}{tracks['title']}.mp3")
 
 
-
+print(f'{Fore.BLUE+Style.BRIGHT}1 запрос johan x goddamn{Style.RESET_ALL}\n')
 mus = Entered_Track_48.get('johan x goddamn',10)
-
 for track in mus['response']['items']:
     print(f"{track['author']} - {track['title']} {track['duration_track']}")
 
+
+print(f'\n\n{Fore.GREEN+Style.BRIGHT}2 запрос green day\n\n{Style.RESET_ALL}')
 mus2 = Entered_Track_48.get('green day',10)
 for track in mus2['response']['items']:
     print(f"{track['author']} - {track['title']} {track['duration_track']}")
