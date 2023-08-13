@@ -15,7 +15,6 @@ class Entered_Track_48:
         else:
             __user = fake_useragent.UserAgent().random
             __headers = {"user-agent": __user}
-            __list = []
 
             url = f"https://rur.hitmotop.com/search?q={music_name}"
             response = requests.get(url, headers=__headers)

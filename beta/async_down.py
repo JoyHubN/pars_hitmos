@@ -4,7 +4,8 @@ import tqdm, time, os, textwrap
 # from pars_hitmotop import entered_tracks
 # from async_p.rating_tracks import RatingTracksPage
 # from sync_p.entered_tracks import Entered_Track_48
-from sync_p.entered_tracks import Entered_Track_48
+# from sync_p.rating_tracks_count import rating_tr_count
+from sync_p.rating_tracks_count import RatingTracks
 
 
 
@@ -59,7 +60,7 @@ start_time_all = time.time()
 
 
 start_time1 = time.time()
-mus = Entered_Track_48.get('alan walker',10)
+mus = RatingTracks.get_tracks(10)
 print(f'\n1 ЗАПРОС ЗА {time.time() - start_time1}\n\n')
 
 # start_time2 = time.time()

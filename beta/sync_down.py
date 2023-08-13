@@ -1,53 +1,39 @@
-import asyncio
-import httpx
-import tqdm, time, os, textwrap
+import tqdm, time, os, textwrap, requests
 # from pars_hitmotop import entered_tracks
 # from async_p.rating_tracks import RatingTracksPage
+# from sync_p.entered_tracks import Entered_Track_48
 from sync_p.entered_tracks import Entered_Track_48
 
 
 
 
 
+def down_mus(url: str, filname: str):
+    with open(f'C:/Users/User/Desktop/tg_bot_mus/post_tg/1/pars_hitmotop/beta/mus/{filname}.mp3', 'wb') as f:
+        with requests.get(url, stream=True) as r:
+          
+            total = int(r.headers.get('content-length', 0))
+            tqdm_items = {
+                'total': total,
+                'miniters': 1,
+                'unit_scale': True,
+                'unit_divisor': 1024,
+                'colour': 'green',
+                'bar_format': "{desc} {percentage:3.0f}%|{bar}| {n_fmt}/{total_fmt}"
+            }
 
-async def down_mus(url: str, filname: str, semaphore: asyncio.Semaphore):
-    async with semaphore:
-        with open(f'C:/Users/User/Desktop/tg_bot_mus/post_tg/1/pars_hitmotop/beta/mus/{filname}.mp3', 'wb') as f:
-            async with httpx.AsyncClient() as client:
-                async with client.stream('GET', url, follow_redirects=False) as r:
-                    redir = r.headers.get('location')
-                    if redir:
-                        async with client.stream('GET', redir) as red_res:
-                            red_res.raise_for_status()
-                            total = int(red_res.headers.get('content-length', 0))
-                            tqdm_items = {
-                                'total': total,
-                                'miniters': 1,
-                                'unit_scale': True,
-                                'unit_divisor': 1024,
-                                'colour': 'green',
-                                'bar_format': "{desc} {percentage:3.0f}%|{bar}| {n_fmt}/{total_fmt}"
-                            }
+            with tqdm.tqdm(**tqdm_items) as pb:
+                shortened_title = textwrap.shorten(filname, width=20, placeholder='...')
+                pb.set_description(shortened_title)  # Установка описания без "it"
+                for chunk in r.iter_content(chunk_size=8192):
+                    pb.update(len(chunk))
+                    f.write(chunk)
+def main(data):
+    tasks = [(down_mus(i['url_down'], 
+    f"{i['author']} - {i['title']}")) for i in data['response']['items']]
+   
+        
 
-                            with tqdm.tqdm(**tqdm_items) as pb:
-                                shortened_title = textwrap.shorten(filname, width=20, placeholder='...')
-                                pb.set_description(shortened_title)  # Установка описания без "it"
-                                async for chunk in red_res.aiter_bytes():
-                                    pb.update(len(chunk))
-                                    f.write(chunk)
-                    else:
-                        r.raise_for_status()
-
-async def main(data):
-    concurrency = 2  # Количество одновременных загрузок
-    semaphore = asyncio.Semaphore(concurrency)
-    loop = asyncio.get_running_loop()
-
-    tasks = [loop.create_task(down_mus(i['url_down'], 
-    f"{i['author']} - {i['title']}", semaphore)) for i in
-             data['response']['items']]
-
-    await asyncio.gather(*tasks, return_exceptions=True)
 
 os.system('cls')
 
@@ -66,7 +52,7 @@ print(f'\n1 ЗАПРОС ЗА {time.time() - start_time1}\n\n')
 # print(f'\n2 ЗАПРОС ЗА {time.time() - start_time2}\n\n')
 
 start_time_d1 = time.time()
-asyncio.run(main(mus))
+main(mus)
 print(f'\n1 СКАЧАН ЗА {time.time() - start_time_d1}\n\n')
 
 # start_time_d2 = time.time()
