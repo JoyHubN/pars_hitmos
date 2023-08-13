@@ -1,8 +1,10 @@
 import asyncio
 import httpx
-import tqdm, time, os
+import tqdm, time, os, textwrap
 # from pars_hitmotop import entered_tracks
-from async_p.rating_track_count import RatingTrackCount
+# from async_p.rating_tracks import RatingTracksPage
+# from sync_p.entered_tracks import Entered_Track_48
+from sync_p.entered_tracks import Entered_Track_48
 
 
 
@@ -19,7 +21,6 @@ async def down_mus(url: str, filname: str, semaphore: asyncio.Semaphore):
                         async with client.stream('GET', redir) as red_res:
                             red_res.raise_for_status()
                             total = int(red_res.headers.get('content-length', 0))
-
                             tqdm_items = {
                                 'total': total,
                                 'miniters': 1,
@@ -30,7 +31,8 @@ async def down_mus(url: str, filname: str, semaphore: asyncio.Semaphore):
                             }
 
                             with tqdm.tqdm(**tqdm_items) as pb:
-                                pb.set_description(filname)  # Установка описания без "it"
+                                shortened_title = textwrap.shorten(filname, width=20, placeholder='...')
+                                pb.set_description(shortened_title)  # Установка описания без "it"
                                 async for chunk in red_res.aiter_bytes():
                                     pb.update(len(chunk))
                                     f.write(chunk)
@@ -57,7 +59,7 @@ start_time_all = time.time()
 
 
 start_time1 = time.time()
-mus = RatingTrackCount.get(5)
+mus = Entered_Track_48.get('alan walker',10)
 print(f'\n1 ЗАПРОС ЗА {time.time() - start_time1}\n\n')
 
 # start_time2 = time.time()
