@@ -68,6 +68,20 @@ class Entered_Track_48:
 
     @staticmethod
     def get(music_name: str, amount: int):
+        """
+:param music_name: Название и автор трека в одной строке.
+:type music_name: str
+:param amount: Количество треков, которое нужно вывести. Max 48.
+:type amount: int
+:return: Список словарей с информацией о треках. Каждый словарь содержит следующие поля:
+    - 'author': str, автор трека;
+    - 'title': str, название трека;
+    - 'url_down': str, ссылка на скачивание трека;
+    - 'duration_track': str, длительность трека;
+    - 'picture_url': str, ссылка на обложку трека;
+    - 'url_track': str, ссылка на страницу трека.
+ 
+        """
         return asyncio.run(Entered_Track_48.async_get(music_name, amount))
 
 

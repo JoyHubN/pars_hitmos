@@ -2,14 +2,16 @@ import asyncio
 import httpx
 import tqdm, time, os
 # from pars_hitmotop import entered_tracks
-from pars_hitmotop.async_p.rating_track_count import RatingTrackCount
+from async_p.rating_track_count import RatingTrackCount
+
+
 
 
 
 
 async def down_mus(url: str, filname: str, semaphore: asyncio.Semaphore):
     async with semaphore:
-        with open(f'C:/Users/User/Desktop/tg_bot_mus/post_tg/1/aio/{filname}.mp3', 'wb') as f:
+        with open(f'C:/Users/User/Desktop/tg_bot_mus/post_tg/1/pars_hitmotop/beta/mus/{filname}.mp3', 'wb') as f:
             async with httpx.AsyncClient() as client:
                 async with client.stream('GET', url, follow_redirects=False) as r:
                     redir = r.headers.get('location')
@@ -24,7 +26,7 @@ async def down_mus(url: str, filname: str, semaphore: asyncio.Semaphore):
                                 'unit_scale': True,
                                 'unit_divisor': 1024,
                                 'colour': 'green',
-                                'bar_format': "{desc} {percentage:3.0f}%|{bar}| {n_fmt}/{total_fmt} {unit}"
+                                'bar_format': "{desc} {percentage:3.0f}%|{bar}| {n_fmt}/{total_fmt}"
                             }
 
                             with tqdm.tqdm(**tqdm_items) as pb:
@@ -55,7 +57,7 @@ start_time_all = time.time()
 
 
 start_time1 = time.time()
-mus = RatingTrackCount.get(40)
+mus = RatingTrackCount.get(5)
 print(f'\n1 ЗАПРОС ЗА {time.time() - start_time1}\n\n')
 
 # start_time2 = time.time()
