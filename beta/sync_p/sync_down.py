@@ -1,8 +1,7 @@
 import tqdm, time, os, textwrap, requests
-# from pars_hitmotop import entered_tracks
-# from async_p.rating_tracks import RatingTracksPage
-# from sync_p.entered_tracks import Entered_Track_48
-from sync_p.entered_tracks import Entered_Track_48
+
+# from rating_tracks import RatingTracksPage
+
 
 
 
@@ -28,34 +27,4 @@ def down_mus(url: str, filname: str):
                 for chunk in r.iter_content(chunk_size=8192):
                     pb.update(len(chunk))
                     f.write(chunk)
-def main(data):
-    tasks = [(down_mus(i['url_down'], 
-    f"{i['author']} - {i['title']}")) for i in data['response']['items']]
-   
-        
 
-
-os.system('cls')
-
-start_time_all = time.time()
-
-
-
-
-
-start_time1 = time.time()
-mus = Entered_Track_48.get('alan walker',10)
-print(f'\n1 ЗАПРОС ЗА {time.time() - start_time1}\n\n')
-
-# start_time2 = time.time()
-# mus1 = entered_tracks.Entered_Track_48.get('linkin park',10)
-# print(f'\n2 ЗАПРОС ЗА {time.time() - start_time2}\n\n')
-
-start_time_d1 = time.time()
-main(mus)
-print(f'\n1 СКАЧАН ЗА {time.time() - start_time_d1}\n\n')
-
-# start_time_d2 = time.time()
-# asyncio.run(main(mus1))
-# print(f'\n\n2 СКАЧАН ЗА {time.time() - start_time_d2}\n\n')
-print(f'\nВСЕГО ЗА {time.time() - start_time_all}\n\n')
