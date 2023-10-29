@@ -1,61 +1,56 @@
-from entered_tracks import Entered_Track_48
+from modules.entered_tracks import Entered_Track_48
 import urllib.request, os
 from colorama import Fore, Style, init
 os.system('cls')
 init()
 
-path='ПУТЬ'
+path=r'C:\Users\днс\python_project\pars_hitmotop\music'
+result=Entered_Track_48('linkin park',10)
 
 
+# Получить количество треков
+amout = result.count_tracks
 
-
-# Получить автора трека/ов
-def get_author_track():
-    for tracks in mus['response']['items']:
-        print(tracks['author'])
+# Получить автора треков
+author = result.get_author
        
-# Получить названия трекa/ов
-def get_title_track():
-    for tracks in mus['response']['items']:
-        print(tracks['title'])
+# Получить названия треков
+title = result.get_title
 
+# Получить ссылки на скачивания треков
+url_down= result.get_url_down
 
-# Получить ссылку/и на скачивания трека/ов
-def get_url_down_track():
-    for tracks in mus['response']['items']:
-        print(tracks['url_down'])
+# Получить прямую ссылку на скачивание треков
+url_down_new= result.direct_download_link
 
-# Получить длителькость трека/ов
-def get_duration_track():
-    for tracks in mus['response']['items']:
-        print(tracks['duration_track'])
+# Получить длителькость треков
+duraction = result.get_duraction
 
-# Получить обложку/и трека/ов
-def get_picture_url_track():
-    for tracks in mus['response']['items']:
-        print(tracks['picture_url'])
+# Получить обложки треков
+picture = result.get_picture_url
 
-# Получить ссылку/и на трек/и
-def get_url_track():
-    for tracks in mus['response']['items']:
-        print(tracks['url_track'])
+# Получить ссылки на треки
+url_tracks = result.get_url_track
 
 # Скачать найденные треки треки    
 def down_music(path):
-    for tracks in mus['response']['items']:
-        print(tracks['url_down'])
-        urllib.request.urlretrieve(
-            tracks['url_down'],
-        f"{path}{tracks['title']}.mp3")
+    for _ in range(result.count_tracks):
+        print(f'Скачиваю по ссылке: {url_down_new[_]}')
+        if url_down_new[_] != None:
+            urllib.request.urlretrieve(url_down_new[_],f"{path}\{title[_]}.mp3")
+        else:
+            print(f'Скачиваю через оригинал ссылку\n{url_down[_]}')
+            urllib.request.urlretrieve(url_down[_],f"{path}\{title[_]}.mp3")
 
 
-print(f'{Fore.BLUE+Style.BRIGHT}1 запрос johan x goddamn{Style.RESET_ALL}\n')
-mus = Entered_Track_48.get('johan x goddamn',10)
-for track in mus['response']['items']:
-    print(f"{track['author']} - {track['title']} {track['duration_track']}")
+print(f'{Fore.BLUE+Style.BRIGHT}1 запрос {result.music_name}{Style.RESET_ALL}\n')
+for _ in range(result.count_tracks):
+    print(f"{author} - {title} {duraction}")
+down_music(path)
 
 
-print(f'\n\n{Fore.GREEN+Style.BRIGHT}2 запрос green day\n\n{Style.RESET_ALL}')
-mus2 = Entered_Track_48.get('green day',10)
-for track in mus2['response']['items']:
-    print(f"{track['author']} - {track['title']} {track['duration_track']}")
+result = Entered_Track_48('alan walker', 10)
+
+print(f'\n\n{Fore.GREEN+Style.BRIGHT}2 запрос {result.music_name}\n\n{Style.RESET_ALL}')
+for _ in range(result.count_tracks):
+    print(f"{result.get_author} - {result.get_title} {result.get_duraction}")
