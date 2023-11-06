@@ -2,7 +2,7 @@
 1. [Что именно парсит?](https://github.com/PY079/pars_hitmotop/blob/main/README.md#что-именно-парсит)
 2. [Как использовать модуль entered_tracks](https://github.com/PY079/pars_hitmotop/blob/main/README.md#как-использовать-модуль-entered_tracks)
 3. [Как использовать модуль rating_tracks_count](https://github.com/PY079/pars_hitmotop/blob/main/README.md#как-использовать-модуль-rating_tracks_count)
-4. [Как использовать модуль rating_tracks_page](https://github.com/PY079/pars_hitmotop/blob/main/README.md#как-использовать-модуль-rating_tracks_page)\
+4. [Как использовать модуль rating_tracks_page](https://github.com/PY079/pars_hitmotop/blob/main/README.md#как-использовать-модуль-rating_tracks_page)
 5. [Что можно достать при запросе?](https://github.com/PY079/pars_hitmotop/blob/main/README.md#что-можно-достать-при-запросе)
 ____
 Этот проект парсит [музыкальный сайт](https://rur.hitmotop.com/)
