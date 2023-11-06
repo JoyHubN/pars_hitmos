@@ -2,20 +2,19 @@
 import fake_useragent, requests
 from bs4 import BeautifulSoup
 
-class rating_tr_count:
+class RatingCount:
     '''
-    Функция для получения списка треков с сайта rur.hitmotop.com.
-Параметры:
-    - count: число от 1 до 48, кол-во треков
-Возвращает словарь вида:
-    {'response': {'items': [...]}} - список словарей с информацией о каждом треке.
-\nСловарь о треке содержит следующие ключи:
-    - 'author': автор трека
-    - 'title': название трека
-    - 'url_track': ссылка на страницу с треком
-    - 'url_down': ссылка на скачивание трека
-    - 'duration_track': длительность трека
-    - 'picture_url': ссылка на обложку трека
+    Функция для получения списка рейтинговых треков с сайта rur.hitmotop.com.
+param: count - число от 1 до 48, кол-во треков
+\nДля получения информации доступны след.функции:
+    - get_author: list, автор трека;
+    - get_title: list, название трека;
+    - get_url_down: list, ссылка на скачивание трека;
+    - direct_download_link: list прямая ссылка на скачивание трека;
+    - get_duraction: list, длительность трека;
+    - get_picture_url: list, ссылка на обложку трека;
+    - get_url_track: list, ссылка на трек.
+ 
     '''
 
     def __init__(self, count_tracks) -> None:
@@ -51,7 +50,7 @@ class rating_tr_count:
                 else: direct_download_link = None
                 item = {
                     'author': _track_artists[idx],
-                    'title': _track_titles[idx],
+                    'title': _track_titles[idx].replace('/','').replace(':','').replace('*','').replace('?','').replace('"','').replace('<','').replace('>','').replace('|','').replace('\\',''),
                     'url_down': _track_urls_dow[idx],
                     'direct_download_link': direct_download_link,
                     'duration_track': _track_duration[idx],
@@ -89,9 +88,3 @@ class rating_tr_count:
     @property
     def get_url_track(self):
         return [item['url_track'] for item in self.data['items']]            
-
-
-rt = rating_tr_count(10)
-for i in range(rt.count_tracks):
-# print(len(rt.get_all['items']), rt.count_tracks)
-    print(f'{rt.get_author[i]} - {rt.get_title[i]}')

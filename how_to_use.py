@@ -1,11 +1,11 @@
-from modules.entered_tracks import Entered_Track_48
+from modules.entered_tracks import EnteredTrack
 import urllib.request, os
 from colorama import Fore, Style, init
 os.system('cls')
 init()
 
 path=r'C:\Users\днс\python_project\pars_hitmotop\music'
-result=Entered_Track_48('linkin park',10)
+result=EnteredTrack('linkin park',10)
 
 
 # Получить количество треков
@@ -33,24 +33,26 @@ picture = result.get_picture_url
 url_tracks = result.get_url_track
 
 # Скачать найденные треки треки    
-def down_music(path):
+def down_music(path,result=result):
     for _ in range(result.count_tracks):
-        print(f'Скачиваю по ссылке: {url_down_new[_]}')
-        if url_down_new[_] != None:
-            urllib.request.urlretrieve(url_down_new[_],f"{path}\{title[_]}.mp3")
+        print(f'Скачиваю по ссылке: {result.direct_download_link[_]}')
+        if result.direct_download_link[_] != None:
+            urllib.request.urlretrieve(result.direct_download_link[_],f"{path}\{result.get_title[_]}.mp3")
         else:
-            print(f'Скачиваю через оригинал ссылку\n{url_down[_]}')
-            urllib.request.urlretrieve(url_down[_],f"{path}\{title[_]}.mp3")
+            print(result.get_title[_])
+            print(f'Скачиваю hitmotop\n{result.get_url_down[_]}')
+            urllib.request.urlretrieve(result.get_url_down[_],f"{path}\{result.get_title[_]}.mp3")
 
 
 print(f'{Fore.BLUE+Style.BRIGHT}1 запрос {result.music_name}{Style.RESET_ALL}\n')
 for _ in range(result.count_tracks):
     print(f"{author} - {title} {duraction}")
-down_music(path)
+down_music(path, result)
 
 
-result = Entered_Track_48('alan walker', 10)
+result = EnteredTrack('green day', 10)
 
 print(f'\n\n{Fore.GREEN+Style.BRIGHT}2 запрос {result.music_name}\n\n{Style.RESET_ALL}')
 for _ in range(result.count_tracks):
     print(f"{result.get_author} - {result.get_title} {result.get_duraction}")
+down_music(path, result)

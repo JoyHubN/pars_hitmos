@@ -1,23 +1,21 @@
 import fake_useragent, requests
 from bs4 import BeautifulSoup
 from modules.excepts import NoFoundTrack, MaxTrack
-'''Треки из переданного запроса'''
 
-
-
-class Entered_Track_48:
+class EnteredTrack:
     """
-:param music_name: Название и автор трека в одной строке.
-:type music_name: str
-:param amount: Количество треков, которое нужно вывести. Max 48.
-:type amount: int
-:return: Список словарей с информацией о треках. Каждый словарь содержит следующие поля:
-    - 'author': str, автор трека;
-    - 'title': str, название трека;
-    - 'url_down': str, ссылка на скачивание трека;
-    - 'duration_track': str, длительность трека;
-    - 'picture_url': str, ссылка на обложку трека;
-    - 'url_track': str, ссылка на страницу трека.
+Треки из запроса
+:param music_name: Название и автор трека в одной строке. - str
+:param amount: Количество треков, которое нужно вывести. Max 48. - int
+:param get_redirect_url: bool тип, True-получить прямую ссылку на скачивание трека, но увеличивает время время выполнения
+Для получения информации доступны след.функции:
+    - get_author: list, автор трека;
+    - get_title: list, название трека;
+    - get_url_down: list, ссылка на скачивание трека;
+    - direct_download_link: list прямая ссылка на скачивание трека;
+    - get_duraction: list, длительность трека;
+    - get_picture_url: list, ссылка на обложку трека;
+    - get_url_track: list, ссылка на трек.
  
     """
 
@@ -25,11 +23,11 @@ class Entered_Track_48:
         self.music_name = music_name
         self.amount = amount
         self.get_redirect_url = get_redirect_url
-        self.get_2
+        self.get_info
         
 
     @property
-    def get_2(self):
+    def get_info(self):
 
         if self.amount > 48:
             raise MaxTrack
@@ -41,11 +39,10 @@ class Entered_Track_48:
             _url = f"https://rur.hitmotop.com/search?q={self.music_name}"
             _response = requests.get(_url, headers=__headers)
             _soup = BeautifulSoup(_response.text, "lxml")
-            try:
-                if _soup.find('h2',class_='tracks__title content-item-title').text:
-                    raise NoFoundTrack
-            except AttributeError:
-                pass
+
+            
+            if _soup.find('h2',class_='tracks__title content-item-title'):
+                raise NoFoundTrack
 
 
 
@@ -66,7 +63,7 @@ class Entered_Track_48:
 
                 item = {
                     'author': _track_artists[idx],
-                    'title': _track_titles[idx],
+                    'title': _track_titles[idx].replace('/','').replace(':','').replace('*','').replace('?','').replace('"','').replace('<','').replace('>','').replace('|','').replace('\\',''),
                     'url_down': _track_urls_dow[idx],
                     'direct_download_link': direct_download_link,
                     'duration_track': _track_duration[idx],
