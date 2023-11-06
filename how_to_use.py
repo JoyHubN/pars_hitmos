@@ -1,4 +1,4 @@
-from modules.entered_tracks import EnteredTrack
+from pars_hitmotop.entered_tracks import EnteredTrack
 import urllib.request, os
 from colorama import Fore, Style, init
 os.system('cls')
@@ -33,7 +33,7 @@ picture = result.get_picture_url
 url_tracks = result.get_url_track
 
 # Скачать найденные треки треки    
-def down_music(path,result=result):
+def down_music(path,result):
     for _ in range(result.count_tracks):
         print(f'Скачиваю по ссылке: {result.direct_download_link[_]}')
         if result.direct_download_link[_] != None:

@@ -1,6 +1,6 @@
 import fake_useragent, requests
 from bs4 import BeautifulSoup
-from modules.excepts import NoFoundTrack, MaxTrack
+from pars_hitmotop.excepts import NoFoundTrack, MaxTrack
 
 class EnteredTrack:
     """

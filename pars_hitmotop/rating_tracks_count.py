@@ -17,9 +17,10 @@ param: count - число от 1 до 48, кол-во треков
  
     '''
 
-    def __init__(self, count_tracks) -> None:
+    def __init__(self, count_tracks, get_redirect_url=False) -> None:
         self.count_tracks = count_tracks
         self.count_selection
+        self.get_redirect_url = get_redirect_url
     
     @property
     def count_selection(self):
@@ -45,8 +46,8 @@ param: count - число от 1 до 48, кол-во треков
             _items = []
 
             for idx in range(min(len(_track_titles), self.count_tracks)):
-                if len(_track_urls_dow[idx])>0:
-                    direct_download_link =  f"https://ds.cdn1.deliciouspeaches.com/get/music{_track_urls_dow[idx].split('music')[1]}"
+                if self.get_redirect_url and len(_track_urls_dow[idx])>0:
+                    direct_download_link = requests.get(_track_urls_dow[idx],headers=__headers,allow_redirects=True).url
                 else: direct_download_link = None
                 item = {
                     'author': _track_artists[idx],

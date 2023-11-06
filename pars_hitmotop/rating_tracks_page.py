@@ -6,7 +6,7 @@ from excepts import PageError
 class RatingPage:
     '''
     Функция для получения списка рейтинговых треков с сайта rur.hitmotop.com.
-:param page_number: число от 1 до 11 (номер страницы с треками)
+:param page_count: число от 1 до 11 (номер страницы с треками)
 \nДля получения информации доступны след.функции:
     - get_author: list, автор трека;
     - get_title: list, название трека;
@@ -16,20 +16,21 @@ class RatingPage:
     - get_picture_url: list, ссылка на обложку трека;
     - get_url_track: list, ссылка на трек.
     '''
-    def __init__(self, page_number:int):
-        self.page_number = page_number
+    def __init__(self, page_count:int, get_redirect_url=False):
+        self.page_count = page_count
+        self.get_redirect_url = get_redirect_url
         self.page_selection
 
     @property
     def page_selection(self):
  
-        if self.page_number >12: 
+        if self.page_count >11: 
             raise PageError
         else:
             
             __user = fake_useragent.UserAgent().random
             __headers = {'user-agent': __user}
-            if self.page_number == 1:
+            if self.page_count == 1:
                 __list = []
                 url = 'https://rur.hitmotop.com/songs/top-rated'
                 response = requests.get(url, headers=__headers)
@@ -43,11 +44,16 @@ class RatingPage:
                 _track_url = [f"https://rur.hitmotop.com{tra_url.get('href')}" for tra_url in _soup.find_all('a', class_='track__info-l')]
                 
                 for idx in range(min(len(_track_titles), 48)):
+                    if self.get_redirect_url and len(_track_urls_dow[idx])>0:
+                        direct_download_link = requests.get(_track_urls_dow[idx],headers=__headers,allow_redirects=True).url
+                        print(f'Получил прямую ссылку: {direct_download_link}')
+                    else: direct_download_link = None
+                    
                     items={
                         'author': _track_artists[idx],
                         'title':  _track_titles[idx].replace('/','').replace(':','').replace('*','').replace('?','').replace('"','').replace('<','').replace('>','').replace('|','').replace('\\',''),
                         'url_down': _track_urls_dow[idx],
-                        'direct_download_link': f"https://ds.cdn1.deliciouspeaches.com/get/music{_track_urls_dow[idx].split('music')[1]}",
+                        'direct_download_link': direct_download_link,
                         'url_track': _track_url[idx],
                         'duration_track': _track_duration[idx],
                         'picture_url': _track_pictures[idx]
@@ -60,14 +66,14 @@ class RatingPage:
                 
             
             else: 
-                self.page_number *= 48
+                self.page_count *= 48
 
                 __list = []
 
                 url = 'https://rur.hitmotop.com/songs/top-rated/start/'
 
                 items = []
-                for page in range(0, self.page_number, 48):
+                for page in range(0, self.page_count, 48):
 
                     response = requests.get(f'{url}{page}', headers=__headers)
                     soup = BeautifulSoup(response.text, 'lxml')
@@ -82,8 +88,8 @@ class RatingPage:
                     
 
                     for idx in range(min(len(track_titles), 48)):
-                        if len(track_urls_dow[idx])>0:
-                            direct_download_link= f"https://ds.cdn1.deliciouspeaches.com/get/music{track_urls_dow[idx].split('music')[1]}"
+                        if self.get_redirect_url and len(_track_urls_dow[idx])>0:
+                            direct_download_link = requests.get(_track_urls_dow[idx],headers=__headers,allow_redirects=True).url
                         else: direct_download_link=None
    
                         items={
