@@ -11,5 +11,19 @@ ____
 from pars_hitmotop.entered_tracks import EnteredTrack
 result=EnteredTrack('linkin park',10)
 ```
-1 аргументом (musci_name) передать название пенси или автора. 2 Аргументом (count) передать количество треков
+1 аргументом (musci_name) передается название пенси или автора. 2 Аргументом (count) передается количество треков
+____
+## Как использовать модуль *rating_tracks_count*
+```
+from pars_hitmotop.rating_tracks_count import RatingCount
+result=RatingCount(10)
+```
+1 аргументом (count) передается количество песен
+____
+## Как использовать модуль *rating_tracks_page*
+```
+from pars_hitmotop.rating_tracks_page import RatingPage
+result=RatingPage(10)
+```
+1 аргументом (count) передается количество страниц (max 11)
 ____
