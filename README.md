@@ -35,7 +35,7 @@ ____
 |result.get_title| Получить название трека|
 |result.get_url_down|Получить ссылку на скачивание трека|
 |result.direct_download_link|Получть пряму ссылку на скачивание трека|
-|result.get_url_down|о|
+|result.get_url_down|ошолот ьб|
 |result.get_url_down|л|
 
 
