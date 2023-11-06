@@ -1,10 +1,16 @@
 # Оглавление
+1. [Что именно парсит?](https://github.com/PY079/pars_hitmotop/blob/main/README.md#что-именно-парсит)
+2. [Как использовать модуль entered_tracks](https://github.com/PY079/pars_hitmotop/blob/main/README.md#как-использовать-модуль-entered_tracks)
+3. [Как использовать модуль rating_tracks_count](https://github.com/PY079/pars_hitmotop/blob/main/README.md#как-использовать-модуль-rating_tracks_count)
+4. [Как использовать модуль rating_tracks_page](https://github.com/PY079/pars_hitmotop/blob/main/README.md#как-использовать-модуль-rating_tracks_page)\
+5. [Что можно достать при запросе?](https://github.com/PY079/pars_hitmotop/blob/main/README.md#что-можно-достать-при-запросе)
+____
 Этот проект парсит [музыкальный сайт](https://rur.hitmotop.com/)
 ____
 # Что именно парсит?
-1. [Рейтинговые треки](https://rur.hitmotop.com/songs/top-rated) выбирая количество треков (но <= 48)
-2. Тоже [рейтиновые треки](https://rur.hitmotop.com/songs/top-rated) но можно выбрать количество страниц, с которых будет произведен парсинг
-3. Треки введеные пользователем
+1. [Рейтинговые треки](https://rur.hitmotop.com/songs/top-rated) от 1 до 48;
+2. Тоже [рейтиновые треки](https://rur.hitmotop.com/songs/top-rated) но можно выбрать количество страниц, с которых будет произведен парсинг;
+3. Треки введеные пользователем. Парсит от 1 трека до конечной страницы (на одной старнице 48 треков)
 ____
 ## Как использовать модуль *entered_tracks*
 ```
@@ -39,6 +45,5 @@ ____
 |result.get_picture_url|Получить ссылку на обложку трека|
 |result.get_url_track|Получить ссылку трек|
 |result.get_all|Получить все данные в виде словаря|
-
 
 ____
