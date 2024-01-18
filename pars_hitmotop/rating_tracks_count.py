@@ -17,10 +17,10 @@ param: count - число от 1 до 48, кол-во треков
  
     '''
 
-    def __init__(self, count_tracks, get_redirect_url=False) -> None:
+    def __init__(self, count_tracks, get_redirect_url=False):
         self.count_tracks = count_tracks
-        self.count_selection
         self.get_redirect_url = get_redirect_url
+        self.count_selection
     
     @property
     def count_selection(self):
@@ -31,17 +31,19 @@ param: count - число от 1 до 48, кол-во треков
             
             __user = fake_useragent.UserAgent().random
             __headers = {'user-agent': __user}
+            __url1= requests.get('https://hitmos.me/', headers=__headers, allow_redirects=True).url
+            
 
-            url = 'https://rur.hitmotop.com/songs/top-rated'
+            url = f'{__url1}songs/top-rated'
             response = requests.get(url, headers=__headers)
-            _soup = BeautifulSoup(response.text, 'lxml')
+            _soup = BeautifulSoup(response.text, 'html.parser')
 
             _track_titles = [i.text.strip() for i in _soup.find_all("div", class_="track__title")]
             _track_artists = [i.text.strip() for i in _soup.find_all("div", class_="track__desc")]
             _track_duration = [i.text.strip() for i in _soup.find_all("div", class_="track__fulltime")]
             _track_pictures = [f"{i.get('style')[23:-3]}" for i in _soup.find_all("div", class_="track__img")]
             _track_urls_dow = [i.get('href') for i in _soup.find_all('a', class_='track__download-btn')]
-            _track_url = [f"https://rur.hitmotop.com{tra_url.get('href')}" for tra_url in _soup.find_all('a', class_='track__info-l')]
+            _track_url = [f"{__url1}{tra_url.get('href')}" for tra_url in _soup.find_all('a', class_='track__info-l')]
 
             _items = []
 

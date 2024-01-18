@@ -1,4 +1,4 @@
-from pars_hitmotop.entered_tracks import EnteredTrack
+from .entered_tracks import EnteredTrack
 import urllib.request, os
 from colorama import Fore, Style, init
 os.system('cls')

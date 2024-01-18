@@ -1,6 +1,6 @@
 import fake_useragent, requests
 from bs4 import BeautifulSoup
-from pars_hitmotop.excepts import NoFoundTrack, MaxTrack
+from .excepts import NoFoundTrack, MaxTrack
 
 class EnteredTrack:
     """
@@ -34,11 +34,11 @@ class EnteredTrack:
         else:
             __user = fake_useragent.UserAgent().random
             __headers = {"user-agent": __user}
-
+            __url1= requests.get('https://hitmos.me/', headers=__headers, allow_redirects=True).url
             
-            _url = f"https://rur.hitmotop.com/search?q={self.music_name}"
+            _url = f"{__url1}search?q={self.music_name}"
             _response = requests.get(_url, headers=__headers)
-            _soup = BeautifulSoup(_response.text, "lxml")
+            _soup = BeautifulSoup(_response.text, "html.parser")
 
             
             if _soup.find('h2',class_='tracks__title content-item-title'):
@@ -52,7 +52,7 @@ class EnteredTrack:
             _track_duration = [i.text.strip() for i in _soup.find_all("div", class_="track__fulltime")]
             _track_pictures = [f"{i.get('style')[23:-3]}" for i in _soup.find_all("div", class_="track__img")]
             _track_urls_dow = [i.get('href') for i in _soup.find_all('a', class_='track__download-btn')]
-            _track_url = [f"https://rur.hitmotop.com{tra_url.get('href')}" for tra_url in _soup.find_all('a', class_='track__info-l')]
+            _track_url = [f"{_url}{tra_url.get('href')}" for tra_url in _soup.find_all('a', class_='track__info-l')]
 
             _items = []
             for idx in range(min(len(_track_titles), self.amount)):

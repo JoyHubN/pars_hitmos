@@ -1,7 +1,7 @@
 '''Рейтинговые треки'''
 import fake_useragent, requests
 from bs4 import BeautifulSoup
-from excepts import PageError
+from .excepts import PageError
 
 class RatingPage:
     '''
@@ -30,23 +30,25 @@ class RatingPage:
             
             __user = fake_useragent.UserAgent().random
             __headers = {'user-agent': __user}
+            __url1= requests.get('https://hitmos.me/', headers=__headers, allow_redirects=True).url
+            
+            _url = f"{__url1}search?q={self.music_name}"
             if self.page_count == 1:
                 __list = []
-                url = 'https://rur.hitmotop.com/songs/top-rated'
+                url = f'{_url}songs/top-rated'
                 response = requests.get(url, headers=__headers)
-                _soup = BeautifulSoup(response.text, 'lxml')
+                _soup = BeautifulSoup(response.text, 'html.parser')
                 
                 _track_titles = [i.text.strip() for i in _soup.find_all("div", class_="track__title")]
                 _track_artists = [i.text.strip() for i in _soup.find_all("div", class_="track__desc")]
                 _track_duration = [i.text.strip() for i in _soup.find_all("div", class_="track__fulltime")]
                 _track_pictures = [f"{i.get('style')[23:-3]}" for i in _soup.find_all("div", class_="track__img")]
                 _track_urls_dow = [i.get('href') for i in _soup.find_all('a', class_='track__download-btn')]
-                _track_url = [f"https://rur.hitmotop.com{tra_url.get('href')}" for tra_url in _soup.find_all('a', class_='track__info-l')]
+                _track_url = [f"{_url}{tra_url.get('href')}" for tra_url in _soup.find_all('a', class_='track__info-l')]
                 
                 for idx in range(min(len(_track_titles), 48)):
                     if self.get_redirect_url and len(_track_urls_dow[idx])>0:
                         direct_download_link = requests.get(_track_urls_dow[idx],headers=__headers,allow_redirects=True).url
-                        print(f'Получил прямую ссылку: {direct_download_link}')
                     else: direct_download_link = None
                     
                     items={
@@ -70,7 +72,7 @@ class RatingPage:
 
                 __list = []
 
-                url = 'https://rur.hitmotop.com/songs/top-rated/start/'
+                url = f'{_url}top-rated/start/'
 
                 items = []
                 for page in range(0, self.page_count, 48):
@@ -81,9 +83,9 @@ class RatingPage:
                     track_titles = [i.text.strip() for i in soup.find_all("div", class_="track__title")]
                     track_artists = [i.text.strip() for i in soup.find_all("div", class_="track__desc")]
                     track_duration = [i.text.strip() for i in soup.find_all("div", class_="track__fulltime")]
-                    track_pictures = [f"https://rur.hitmotop.com{i.get('style')[23:-3]}" for i in soup.find_all("div", class_="track__img")]
+                    track_pictures = [f"{_url}{i.get('style')[23:-3]}" for i in soup.find_all("div", class_="track__img")]
                     track_urls_dow = [f"{track_dow_url.get('href')}" for track_dow_url in soup.find_all('a', class_='track__download-btn')]
-                    track_url = [f"https://rur.hitmotop.com{tra_url.get('href')}" for tra_url in soup.find_all('a', class_='track__info-l')]
+                    track_url = [f"{_url}{tra_url.get('href')}" for tra_url in soup.find_all('a', class_='track__info-l')]
 
                     
 
