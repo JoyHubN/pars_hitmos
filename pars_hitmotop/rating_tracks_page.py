@@ -30,12 +30,12 @@ class RatingPage:
             
             __user = fake_useragent.UserAgent().random
             __headers = {'user-agent': __user}
-            __url1= requests.get('https://hitmos.me/', headers=__headers, allow_redirects=True).url
+            __url11= requests.get('https://hitmos.me/', headers=__headers, allow_redirects=True).url
+            __url1 = __url11[:-1] if '/' in __url11[-1] else __url11
             
-            _url = f"{__url1}search?q={self.music_name}"
             if self.page_count == 1:
                 __list = []
-                url = f'{_url}songs/top-rated'
+                url = f"{__url1}{'/' if '/' in __url1[:-1] else ''}songs/top-rated"
                 response = requests.get(url, headers=__headers)
                 _soup = BeautifulSoup(response.text, 'html.parser')
                 
@@ -44,7 +44,7 @@ class RatingPage:
                 _track_duration = [i.text.strip() for i in _soup.find_all("div", class_="track__fulltime")]
                 _track_pictures = [f"{i.get('style')[23:-3]}" for i in _soup.find_all("div", class_="track__img")]
                 _track_urls_dow = [i.get('href') for i in _soup.find_all('a', class_='track__download-btn')]
-                _track_url = [f"{_url}{tra_url.get('href')}" for tra_url in _soup.find_all('a', class_='track__info-l')]
+                _track_url = [f"{__url1}{tra_url.get('href')}" for tra_url in _soup.find_all('a', class_='track__info-l')]
                 
                 for idx in range(min(len(_track_titles), 48)):
                     if self.get_redirect_url and len(_track_urls_dow[idx])>0:
@@ -72,7 +72,7 @@ class RatingPage:
 
                 __list = []
 
-                url = f'{_url}top-rated/start/'
+                url = f"{__url1}{'/' if '/' in __url1[:-1] else ''}songs/top-rated/start/"
 
                 items = []
                 for page in range(0, self.page_count, 48):
@@ -80,13 +80,13 @@ class RatingPage:
                     response = requests.get(f'{url}{page}', headers=__headers)
                     soup = BeautifulSoup(response.text, 'lxml')
 
+
                     track_titles = [i.text.strip() for i in soup.find_all("div", class_="track__title")]
                     track_artists = [i.text.strip() for i in soup.find_all("div", class_="track__desc")]
                     track_duration = [i.text.strip() for i in soup.find_all("div", class_="track__fulltime")]
-                    track_pictures = [f"{_url}{i.get('style')[23:-3]}" for i in soup.find_all("div", class_="track__img")]
+                    track_pictures = [f"{__url1}{i.get('style')[23:-3]}" for i in soup.find_all("div", class_="track__img")]
                     track_urls_dow = [f"{track_dow_url.get('href')}" for track_dow_url in soup.find_all('a', class_='track__download-btn')]
-                    track_url = [f"{_url}{tra_url.get('href')}" for tra_url in soup.find_all('a', class_='track__info-l')]
-
+                    track_url = [f"{__url1}{tra_url.get('href')}" for tra_url in soup.find_all('a', class_='track__info-l')]
                     
 
                     for idx in range(min(len(track_titles), 48)):

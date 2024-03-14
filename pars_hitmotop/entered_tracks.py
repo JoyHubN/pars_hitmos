@@ -34,9 +34,11 @@ class EnteredTrack:
         else:
             __user = fake_useragent.UserAgent().random
             __headers = {"user-agent": __user}
-            __url1= requests.get('https://hitmos.me/', headers=__headers, allow_redirects=True).url
+            __url11= requests.get('https://hitmos.me/', headers=__headers, allow_redirects=True).url
+            __url1= __url11[:-1] if '/' in __url11[:-1] else __url11
             
-            _url = f"{__url1}search?q={self.music_name}"
+            _url = f"{__url1}{'/' if '/' in __url1[:-1] else ''}search?q={self.music_name}"
+
             _response = requests.get(_url, headers=__headers)
             _soup = BeautifulSoup(_response.text, "html.parser")
 

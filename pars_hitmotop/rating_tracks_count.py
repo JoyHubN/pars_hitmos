@@ -31,10 +31,11 @@ param: count - число от 1 до 48, кол-во треков
             
             __user = fake_useragent.UserAgent().random
             __headers = {'user-agent': __user}
-            __url1= requests.get('https://hitmos.me/', headers=__headers, allow_redirects=True).url
-            
+            __url11= requests.get('https://hitmos.me/', headers=__headers, allow_redirects=True).url
+            __url1= __url11[:-1] if '/' in __url11[-1] else __url11
 
-            url = f'{__url1}songs/top-rated'
+            url = f"{__url1}{'/' if '/' in __url1[:-1] else ''}songs/top-rated"
+            
             response = requests.get(url, headers=__headers)
             _soup = BeautifulSoup(response.text, 'html.parser')
 
