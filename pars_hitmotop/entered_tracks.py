@@ -54,7 +54,7 @@ class EnteredTrack:
             _track_duration = [i.text.strip() for i in _soup.find_all("div", class_="track__fulltime")]
             _track_pictures = [f"{i.get('style')[23:-3]}" for i in _soup.find_all("div", class_="track__img")]
             _track_urls_dow = [i.get('href') for i in _soup.find_all('a', class_='track__download-btn')]
-            _track_url = [f"{_url}{tra_url.get('href')}" for tra_url in _soup.find_all('a', class_='track__info-l')]
+            _track_url = [f"{__url1}{tra_url.get('href')}" for tra_url in _soup.find_all('a', class_='track__info-l')]
 
             _items = []
             for idx in range(min(len(_track_titles), self.amount)):
