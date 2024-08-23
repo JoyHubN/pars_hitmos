@@ -1,7 +1,8 @@
 '''Рейтинговые треки'''
 import fake_useragent, requests
 from bs4 import BeautifulSoup
-from .excepts import PageError
+from typing import Union
+from .excepts import PageError, RedirectErr, PageCount
 
 class RatingPage:
     '''
@@ -12,12 +13,14 @@ class RatingPage:
     - get_title: list, название трека;
     - get_url_down: list, ссылка на скачивание трека;
     - direct_download_link: list прямая ссылка на скачивание трека;
-    - get_duraction: list, длительность трека;
+    - get_duration: list, длительность трека;
     - get_picture_url: list, ссылка на обложку трека;
     - get_url_track: list, ссылка на трек.
     '''
     def __init__(self, page_count:int, get_redirect_url=False):
-        self.page_count = page_count
+        if isinstance(page_count, int) is False: raise PageCount
+        if isinstance(get_redirect_url, bool) is False: raise RedirectErr
+        self.page_count = int(page_count)
         self.get_redirect_url = get_redirect_url
         self.page_selection
 
@@ -125,7 +128,7 @@ class RatingPage:
         return [item['direct_download_link'] for item in self.data['items']]
 
     @property
-    def get_duraction(self):
+    def get_duration(self):
         return [item['duration_track'] for item in self.data['items']]
     
     @property
@@ -139,5 +142,10 @@ class RatingPage:
     @property
     def get_all(self): return self.data
         
+    @property
+    def get_author_title(self) -> list[str]:
+        __author = self.get_author
+        __title = self.get_title
+        return [f'{__author[i]} - {__title[i]}' for i in range(self.count_tracks)]
 
 

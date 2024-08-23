@@ -1,23 +1,27 @@
 '''Рейтинговые треки'''
 import fake_useragent, requests
 from bs4 import BeautifulSoup
+from .excepts import CountTracksErr, RedirectErr
 
 class RatingCount:
     '''
-    Функция для получения списка рейтинговых треков с сайта rur.hitmotop.com.
+    Функция для получения списка рейтинговых треков с сайта hitmos.me.
 param: count - число от 1 до 48, кол-во треков
 \nДля получения информации доступны след.функции:
     - get_author: list, автор трека;
     - get_title: list, название трека;
     - get_url_down: list, ссылка на скачивание трека;
     - direct_download_link: list прямая ссылка на скачивание трека;
-    - get_duraction: list, длительность трека;
+    - get_duration: list, длительность трека;
     - get_picture_url: list, ссылка на обложку трека;
     - get_url_track: list, ссылка на трек.
  
     '''
 
     def __init__(self, count_tracks, get_redirect_url=False):
+        if isinstance(count_tracks, int) is False: raise CountTracksErr
+        if isinstance(get_redirect_url, bool) is False: raise RedirectErr
+
         self.count_tracks = count_tracks
         self.get_redirect_url = get_redirect_url
         self.count_selection
@@ -48,7 +52,7 @@ param: count - число от 1 до 48, кол-во треков
 
             _items = []
 
-            for idx in range(min(len(_track_titles), self.count_tracks)):
+            for idx in range(len(_track_titles)):
                 if self.get_redirect_url and len(_track_urls_dow[idx])>0:
                     direct_download_link = requests.get(_track_urls_dow[idx],headers=__headers,allow_redirects=True).url
                 else: direct_download_link = None
@@ -82,7 +86,7 @@ param: count - число от 1 до 48, кол-во треков
         return [item['direct_download_link'] for item in self.data['items']]
 
     @property
-    def get_duraction(self):
+    def get_duration(self):
         return [item['duration_track'] for item in self.data['items']]
     
     @property
@@ -92,3 +96,9 @@ param: count - число от 1 до 48, кол-во треков
     @property
     def get_url_track(self):
         return [item['url_track'] for item in self.data['items']]            
+
+    @property
+    def get_author_title(self) -> list[str]:
+        __author = self.get_author
+        __title = self.get_title
+        return [f'{__author[i]} - {__title[i]}' for i in range(self.count_tracks)]

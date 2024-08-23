@@ -1,27 +1,32 @@
 import fake_useragent, requests
 from bs4 import BeautifulSoup
-from .excepts import NoFoundTrack, MaxTrack
+from .excepts import NoFoundTrack, MaxTrack, MusicName, AmountErr, RedirectErr
 
 class EnteredTrack:
     """
-Треки из запроса
+Треки из запроса\n
 :param music_name: Название и автор трека в одной строке. - str
 :param amount: Количество треков, которое нужно вывести. Max 48. - int
-:param get_redirect_url: bool тип, True-получить прямую ссылку на скачивание трека, но увеличивает время время выполнения
+:param get_redirect_url: bool тип, True-получить прямую ссылку на скачивание трека, но увеличивает время выполнения\n
 Для получения информации доступны след.функции:
     - get_author: list, автор трека;
     - get_title: list, название трека;
     - get_url_down: list, ссылка на скачивание трека;
     - direct_download_link: list прямая ссылка на скачивание трека;
-    - get_duraction: list, длительность трека;
+    - get_duration: list, длительность трека;
     - get_picture_url: list, ссылка на обложку трека;
     - get_url_track: list, ссылка на трек.
  
     """
 
-    def __init__(self, music_name:str, amount:int, get_redirect_url=False):
+
+    def __init__(self, music_name:str, amount: int, get_redirect_url=False):
+        if isinstance(music_name, str) is False: raise MusicName
+        if isinstance(amount, int) is False: raise AmountErr
+        if isinstance(get_redirect_url, bool) is False: raise RedirectErr
+
         self.music_name = music_name
-        self.amount = amount
+        self.amount = int(amount)
         self.get_redirect_url = get_redirect_url
         self.get_info
         
@@ -57,10 +62,9 @@ class EnteredTrack:
             _track_url = [f"{__url1}{tra_url.get('href')}" for tra_url in _soup.find_all('a', class_='track__info-l')]
 
             _items = []
-            for idx in range(min(len(_track_titles), self.amount)):
+            for idx in range(len(_track_titles)):
                 if self.get_redirect_url and len(_track_urls_dow[idx])>0:
                     direct_download_link = requests.get(_track_urls_dow[idx],headers=__headers,allow_redirects=True).url
-                    print(f'Получил прямую ссылку: {direct_download_link}')
                 else: direct_download_link = None
 
                 item = {
@@ -79,30 +83,39 @@ class EnteredTrack:
             return self.data
     
     @property
-    def get_author(self):
+    def get_author(self) -> list[str]:
         return [item['author'] for item in self.data['items']]    
     
     @property
-    def get_title(self):
+    def get_title(self) -> list[str]:
         return [item['title'] for item in self.data['items']]
     
     @property
-    def get_url_down(self):
+    def get_url_down(self) -> list[str]:
         return [item['url_down'] for item in self.data['items']]
 
     @property
-    def direct_download_link(self):
+    def direct_download_link(self) -> list[str]:
         return [item['direct_download_link'] for item in self.data['items']]
 
     @property
-    def get_duraction(self):
+    def get_duration(self) -> list[str]:
         return [item['duration_track'] for item in self.data['items']]
     
     @property
-    def get_picture_url(self):
+    def get_picture_url(self) -> list[str]:
         return [item['picture_url'] for item in self.data['items']]
     
     @property
-    def get_url_track(self):
+    def get_url_track(self) -> list[str]:
         return [item['url_track'] for item in self.data['items']]
+    
+    @property
+    def get_author_title(self) -> list[str]:
+        __author = self.get_author
+        __title = self.get_title
+        return [f'{__author[i]} - {__title[i]}' for i in range(self.count_tracks)]
+            
+            
+            
     
