@@ -52,7 +52,7 @@ param: count - число от 1 до 48, кол-во треков
 
             _items = []
 
-            for idx in range(len(_track_titles)):
+            for idx in range(self.count_tracks if len(_track_titles) > self.count_tracks else len(_track_titles)):
                 if self.get_redirect_url and len(_track_urls_dow[idx])>0:
                     direct_download_link = requests.get(_track_urls_dow[idx],headers=__headers,allow_redirects=True).url
                 else: direct_download_link = None

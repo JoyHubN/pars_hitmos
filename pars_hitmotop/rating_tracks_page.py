@@ -1,7 +1,6 @@
 '''Рейтинговые треки'''
 import fake_useragent, requests
 from bs4 import BeautifulSoup
-from typing import Union
 from .excepts import PageError, RedirectErr, PageCount
 
 class RatingPage:
@@ -49,7 +48,7 @@ class RatingPage:
                 _track_urls_dow = [i.get('href') for i in _soup.find_all('a', class_='track__download-btn')]
                 _track_url = [f"{__url1}{tra_url.get('href')}" for tra_url in _soup.find_all('a', class_='track__info-l')]
                 
-                for idx in range(min(len(_track_titles), 48)):
+                for idx in range(len(_track_titles), 48):
                     if self.get_redirect_url and len(_track_urls_dow[idx])>0:
                         direct_download_link = requests.get(_track_urls_dow[idx],headers=__headers,allow_redirects=True).url
                     else: direct_download_link = None
