@@ -35,8 +35,6 @@ def safe_head(self, url, headers, cookies=None, allow_redirects=False, timeout=1
         retry=retry_if_exception_type((ReadTimeout)))
 def safe_get_main_url(self, url, headers, cookies=None, allow_redirects=False, timeout=15) -> Response:
     if len(cookies['sid']) != 0:
-        # self.session.cookies.clear()
-        print(1)
         response = self.session.get(url, headers=headers, cookies=cookies, allow_redirects=True, timeout=timeout)
         if response.status_code == 200:
             self.session.cookies.update(cookies)
@@ -45,10 +43,9 @@ def safe_get_main_url(self, url, headers, cookies=None, allow_redirects=False, t
         else:
             self.session.close()
     else:
-        print(2)
         response = self.session.get(url, headers=headers, allow_redirects=True, timeout=timeout)
         if response.status_code == 200:
-            # self.session.cookies.update(response.cookies.get_dict())
+            self.session.cookies.update(response.cookies.get_dict())
             self.sid.write_sid(self.session.cookies.get_dict())
             return response
 
