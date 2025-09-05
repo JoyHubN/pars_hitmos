@@ -16,21 +16,21 @@ ____
 ## Как использовать модуль *entered_tracks*
 ```
 from parse_hitmos.entered_tracks import EnteredTrack
-result=EnteredTrack('linkin park',10)
+result = EnteredTrack('linkin park',10)
 ```
 1 аргументом (music_name) передается название песни или автора. 2 Аргументом (count) передается количество треков
 ____
 ## Как использовать модуль *rating_tracks_count*
 ```
 from parse_hitmos.rating_tracks_count import RatingCount
-result=RatingCount(10)
+result = RatingCount(10)
 ```
 1 аргументом (count) передается количество песен
 ____
 ## Как использовать модуль *rating_tracks_page*
 ```
 from parse_hitmos.rating_tracks_page import RatingPage
-result=RatingPage(10)
+result = RatingPage(10)
 ```
 1 аргументом (count) передается количество страниц (max 11)
 ____
