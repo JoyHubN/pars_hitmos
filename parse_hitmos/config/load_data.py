@@ -5,6 +5,7 @@ class SID:
     def __init__(self):
         self.sid = None
         self.path = os.path.join(os.path.dirname(__file__), 'data.json')
+        print(self.path)
         self.load_sid()
 
     def load_sid(self):

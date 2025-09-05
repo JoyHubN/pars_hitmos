@@ -69,15 +69,15 @@ class BaseSessionHandlerInputTracks:
         self.create_session()
 
     def create_session(self):
-        
         __headers = get_headers()
         cookies = {'sid': self.sid.get_sid()}        
     
         while self.__attempt < self.max_attempt:
             try:
                 self.session = requests.Session()
-                if len(cookies) == 0:
+                if len(cookies['sid']) == 0:
                     response = self.session.get('https://hitmos.me/', headers=__headers, allow_redirects=True, timeout=(5, 15))    
+                    print(response.status_code)
                 else:
                     self.session.cookies.update(cookies)
                     response = self.session.get('https://hitmos.me/', headers=__headers, allow_redirects=True, timeout=(5, 15))
@@ -103,6 +103,8 @@ class BaseSessionHandlerInputTracks:
                 self.session.close()
             else:
                 self.__attempt = 0
+                print('Произошла непредвиденная ситуация', __file__)
+                
         else:
             raise MaxAttempts(self.max_attempt)
         
