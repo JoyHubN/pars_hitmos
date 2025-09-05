@@ -116,7 +116,10 @@ class EnteredTrack(BaseSessionHandlerInputTracks):
         return [item['url_track'] for item in self.data['items']]
     
     @property
-    def get_author_title_list(self) -> list[str]:
+    def get_all(self)  -> list[str]: return self.data
+
+    @property
+    def get_author_title(self) -> list[str]:
         __author = self.get_author
         __title = self.get_title
         return [f'{__author[i]} - {__title[i]}' for i in range(self.count_tracks)]
