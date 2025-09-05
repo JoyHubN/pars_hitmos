@@ -46,7 +46,6 @@ class RatingCount(BaseSessionHandlerRating):
         else:
             __headers = get_headers()
             request = safe_get(self, self.song_rated, headers=__headers)
-            print(f'{request.url=}')
             _soup = BeautifulSoup(request.text, 'html.parser')
 
             _track_titles = [i.text.strip() for i in _soup.find_all("div", class_="track__title")]

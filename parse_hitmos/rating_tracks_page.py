@@ -108,7 +108,6 @@ class RatingPage(BaseSessionHandlerRatingPage):
                     track_url = [f"{self.base_url[:-1]}{tra_url.get('href')}" for tra_url in soup.find_all('a', class_='track__info-l')]
 
                     for idx in range(0, len(track_titles)):
-                        print(f'{idx=} {track_urls_dow[idx]}')
                         if self.get_redirect_url and len(track_urls_dow[idx]) > 0:
                             try:
                                 direct_download_link = self.session.head(track_urls_dow[idx], headers=__headers, allow_redirects=True).url
@@ -118,7 +117,6 @@ class RatingPage(BaseSessionHandlerRatingPage):
                                 direct_download_link = safe_get(self, track_urls_dow[idx], headers=__headers, allow_redirects=True)
                                 direct_download_link = direct_download_link.url
 
-                                print(f'{idx=} {direct_download_link}')
                         else: direct_download_link=None
    
                         items={
@@ -168,7 +166,7 @@ class RatingPage(BaseSessionHandlerRatingPage):
     def get_all(self)  -> list[str]: return self.data
         
     @property
-    def get_author_title_list(self) -> list[str]:
+    def get_author_title(self) -> list[str]:
         __author = self.get_author
         __title = self.get_title
         return [f'{__author[i]} - {__title[i]}' for i in range(self.count_tracks)]
