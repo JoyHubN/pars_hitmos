@@ -65,3 +65,11 @@ class RedirectErr(Exception):
     
     def __str__(self):
         return self.err
+    
+
+class MaxAttempts(Exception):
+    def __init__(self, max_attempts):
+        self.err = f"Failed to create session after {max_attempts} attempts"
+    
+    def __str__(self):
+        return self.err

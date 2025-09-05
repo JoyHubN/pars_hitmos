@@ -1,0 +1,11 @@
+def replace_symbol_in_title(title):
+    return (title.replace('/','')
+            .replace(':','')
+            .replace('*','')
+            .replace('?','')
+            .replace('"','')
+            .replace('<','')
+            .replace('>','')
+            .replace('|','')
+            .replace('\\','')
+            )
