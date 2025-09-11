@@ -77,7 +77,6 @@ class BaseSessionHandlerInputTracks:
                 self.session = requests.Session()
                 if len(cookies['sid']) == 0:
                     response = self.session.get('https://hitmos.me/', headers=__headers, allow_redirects=True, timeout=(5, 15))    
-                    print(response.status_code)
                 else:
                     self.session.cookies.update(cookies)
                     response = self.session.get('https://hitmos.me/', headers=__headers, allow_redirects=True, timeout=(5, 15))
