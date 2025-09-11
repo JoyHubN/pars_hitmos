@@ -13,6 +13,7 @@ def safe_get(self, url, headers, cookies=None, allow_redirects=False, timeout=15
         print(err)
         self.create_session()
         response = self.session.get(url, headers=headers, cookies=cookies, allow_redirects=allow_redirects, timeout=timeout, stream=True)
+        self.sid.write_sid(response.cookies.get_dict()['sid'])
     return response
 
 
@@ -27,6 +28,7 @@ def safe_head(self, url, headers, cookies=None, allow_redirects=False, timeout=1
         print(err)
         self.create_session()
         response = self.session.head(url, headers=headers, cookies=cookies, allow_redirects=allow_redirects, timeout=timeout, stream=True)
+        self.sid.write_sid(response.cookies.get_dict()['sid'])
     return response
 
 @retry(
