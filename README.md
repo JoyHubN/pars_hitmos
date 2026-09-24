@@ -1,15 +1,21 @@
 # Оглавление
-1. [Что именно парсит?](https://github.com/PY079/pars_hitmotop/blob/main/README.md#что-именно-парсит)
-2. [Как использовать модуль entered_tracks](https://github.com/PY079/pars_hitmotop/blob/main/README.md#как-использовать-модуль-entered_tracks)
-3. [Как использовать модуль rating_tracks_count](https://github.com/PY079/pars_hitmotop/blob/main/README.md#как-использовать-модуль-rating_tracks_count)
-4. [Как использовать модуль rating_tracks_page](https://github.com/PY079/pars_hitmotop/blob/main/README.md#как-использовать-модуль-rating_tracks_page)
-5. [Что можно достать при запросе?](https://github.com/PY079/pars_hitmotop/blob/main/README.md#что-можно-достать-при-запросе)
-6. [Сколько времени понадобиться для запросов?](https://github.com/PY079/pars_hitmotop/blob/main/README.md#сколько-времени-понадобиться-для-получения-всех-нужных-данных-с-сайта)
+1. [Установка](#установка)
+2. [Что именно парсит?](https://github.com/PY079/pars_hitmotop/blob/main/README.md#что-именно-парсит)
+3. [Как использовать модуль entered_tracks](https://github.com/PY079/pars_hitmotop/blob/main/README.md#как-использовать-модуль-entered_tracks)
+4. [Как использовать модуль rating_tracks_count](https://github.com/PY079/pars_hitmotop/blob/main/README.md#как-использовать-модуль-rating_tracks_count)
+5. [Как использовать модуль rating_tracks_page](https://github.com/PY079/pars_hitmotop/blob/main/README.md#как-использовать-модуль-rating_tracks_page)
+6. [Что можно достать при запросе?](https://github.com/PY079/pars_hitmotop/blob/main/README.md#что-можно-достать-при-запросе)
+7. [Сколько времени понадобиться для запросов?](https://github.com/PY079/pars_hitmotop/blob/main/README.md#сколько-времени-понадобиться-для-получения-всех-нужных-данных-с-сайта)
     * [Рейтинговые треки (по страницам)](https://github.com/JoyHubN/pars_hitmos/blob/main/README.md#рейтинговые-треки-по-страницам)
     * [Рейтинговые треки и введенные треки (по трекам)](https://github.com/JoyHubN/pars_hitmos/blob/main/README.md#рейтинговые-треки-и-введенные-треки-по-трекам)
 ____
 Этот проект парсит [музыкальный сайт](https://hitmos.me/)
 ____
+
+# Установка
+`pip install pars-hitmotop`
+
+
 # Что именно парсит?
 1. [Рейтинговые треки](https://hitmos.me/songs/top-rated) от 1 до 48;
 2. Тоже [рейтинговые треки](https://hitmos.me/songs/top-rated) но можно выбрать количество страниц, с которых будет произведен парсинг;
@@ -36,6 +42,7 @@ result = RatingPage(10)
 ```
 1 аргументом (count) передается количество страниц (max 11)
 ____
+
 # Что можно достать при запросе?
 Все возвращается в виде list
 | Метод | Описание |
