@@ -64,19 +64,29 @@ class RatingPage(BaseSessionHandlerRatingPage):
                 for idx in range(0, len(_track_titles)):
                     if self.get_redirect_url and len(_track_urls_dow[idx]) > 0:
                         try:
-                            direct_download_link = self.session.head(_track_urls_dow[idx], headers=__headers, allow_redirects=True).url
+                            direct_download_link = self.session.head(
+                                urljoin(self.base_url, _track_urls_dow[idx]
+                                ), 
+                            headers=__headers, 
+                            allow_redirects=True
+                            ).url
                         except Exception as err:
                             print(err)
 
-                            direct_download_link = safe_head(self, _track_urls_dow[idx], headers=__headers, allow_redirects=True)
-                            direct_download_link = direct_download_link.url
+                            direct_download_link = safe_head(
+                                self, 
+                                urljoin(self.base_url, _track_urls_dow[idx]), 
+                                headers=__headers, 
+                                allow_redirects=True
+                            ).url
+                            # direct_download_link = direct_download_link.url
                     else: 
                         direct_download_link = None
                     
                     items={
                         'author': _track_artists[idx],
                         'title':  replace_symbol_in_title(_track_titles[idx]),
-                        'url_down': _track_urls_dow[idx],
+                        'url_down': urljoin(self.base_url, _track_urls_dow[idx]),
                         'direct_download_link': direct_download_link,
                         'url_track': _track_url[idx],
                         'duration_track': _track_duration[idx],
@@ -96,7 +106,17 @@ class RatingPage(BaseSessionHandlerRatingPage):
                 items = []
                 for page in range(0, self.page_count, 48):
                     __headers = get_headers()
-                    response = safe_get(self, urljoin(self.song_rated_more1, str(page)), cookies={'sid':self.sid.get_sid()}, headers=__headers, timeout=5)
+                    response = safe_get(
+                        self, 
+                        urljoin(
+                            self.song_rated_more1, str(page)
+                        ), 
+                        cookies={
+                            'sid': self.sid.get_sid()
+                            }, 
+                        headers=__headers, 
+                        timeout=5
+                    )
                     soup = BeautifulSoup(response.text, 'html.parser')
                     if not self.get_redirect_url: self.session.close()
 
@@ -110,19 +130,25 @@ class RatingPage(BaseSessionHandlerRatingPage):
                     for idx in range(0, len(track_titles)):
                         if self.get_redirect_url and len(track_urls_dow[idx]) > 0:
                             try:
-                                direct_download_link = self.session.head(track_urls_dow[idx], headers=__headers, allow_redirects=True).url
+                                direct_download_link = self.session.head(
+                                    urljoin(
+                                        self.base_url, track_urls_dow[idx]
+                                    ), 
+                                    headers=__headers, 
+                                    allow_redirects=True
+                                ).url
                             except Exception as err:
                                 print(err)                              
                             
-                                direct_download_link = safe_get(self, track_urls_dow[idx], headers=__headers, allow_redirects=True)
-                                direct_download_link = direct_download_link.url
+                                direct_download_link = safe_get(self, urljoin(self.base_url, track_urls_dow[idx]), headers=__headers, allow_redirects=True).url
+                                # direct_download_link = direct_download_link.url
 
                         else: direct_download_link=None
    
                         items={
                             'author': track_artists[idx],
-                            'title': track_titles[idx],
-                            'url_down': track_urls_dow[idx],
+                            'title': replace_symbol_in_title(track_titles[idx]),
+                            'url_down': urljoin(self.base_url, track_urls_dow[idx]),
                             'direct_download_link': direct_download_link,
                             'url_track': track_url[idx],
                             'duration_track': track_duration[idx],

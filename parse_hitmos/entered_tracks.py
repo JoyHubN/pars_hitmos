@@ -1,5 +1,6 @@
 from bs4 import BeautifulSoup
-from urllib.parse import quote
+from urllib.parse import quote, urljoin
+
 
 from parse_hitmos.tools.retry_func import safe_get, safe_head
 from parse_hitmos.tools.headers import get_headers
@@ -69,13 +70,13 @@ class EnteredTrack(BaseSessionHandlerInputTracks):
             _items = []
             for idx in range(self.amount if len(_track_titles) > self.amount else len(_track_titles)):
                 if self.get_redirect_url and len(_track_urls_dow[idx]) > 0:
-                    direct_download_link = safe_head(self, _track_urls_dow[idx], headers=__headers, allow_redirects=True).url
+                    direct_download_link = safe_head(self, urljoin(self.base_url, _track_urls_dow[idx]), headers=__headers, allow_redirects=True).url
                 else: direct_download_link = None
 
                 item = {
                     'author': _track_artists[idx],
                     'title': replace_symbol_in_title(_track_titles[idx]),
-                    'url_down': _track_urls_dow[idx],
+                    'url_down': urljoin(self.base_url, _track_urls_dow[idx]),
                     'direct_download_link': direct_download_link,
                     'duration_track': _track_duration[idx],
                     'picture_url': _track_pictures[idx],

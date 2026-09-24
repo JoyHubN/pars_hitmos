@@ -1,5 +1,7 @@
 from bs4 import BeautifulSoup
 
+from urllib.parse import urljoin
+
 from parse_hitmos.tools.headers import get_headers
 from parse_hitmos.excepts import CountTracksErr, RedirectErr
 from parse_hitmos.tools.base_session import BaseSessionHandlerRating
@@ -59,12 +61,12 @@ class RatingCount(BaseSessionHandlerRating):
 
             for idx in range(self.count_tracks if len(_track_titles) > self.count_tracks else len(_track_titles)):
                 if self.get_redirect_url and len(_track_urls_dow[idx]) > 0:
-                    direct_download_link = safe_head(self, _track_urls_dow[idx], headers=__headers, allow_redirects=True, timeout=5).url   
+                    direct_download_link = safe_head(self, urljoin(self.base_url, _track_urls_dow[idx]), headers=__headers, allow_redirects=True, timeout=5).url   
                 else: direct_download_link = None
                 item = {
                     'author': _track_artists[idx],
                     'title': replace_symbol_in_title(_track_titles[idx]),
-                    'url_down': _track_urls_dow[idx],
+                    'url_down': urljoin(self.base_url, _track_urls_dow[idx]),
                     'direct_download_link': direct_download_link,
                     'duration_track': _track_duration[idx],
                     'picture_url': _track_pictures[idx],
@@ -75,6 +77,7 @@ class RatingCount(BaseSessionHandlerRating):
             self.session.close()
             self.data = {"items": _items}
             return self.data
+        
     @property
     def get_author(self) -> list[str]:
         return [item['author'] for item in self.data['items']]    
